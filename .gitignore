@@ -1,0 +1,5 @@
+echo "recon_*" >> .gitignore
+echo "*.zip" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo "*.pyc" >> .gitignore
+echo "tmp_*.txt" >> .gitignore
