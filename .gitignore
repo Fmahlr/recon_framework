@@ -1,5 +1,12 @@
-echo "recon_*" >> .gitignore
-echo "*.zip" >> .gitignore
-echo "__pycache__/" >> .gitignore
-echo "*.pyc" >> .gitignore
-echo "tmp_*.txt" >> .gitignore
+# Ignore output directories
+recon_*
+
+# Ignore compressed files
+*.zip
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore temporary files
+tmp_*.txt
