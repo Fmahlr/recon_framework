@@ -9,6 +9,7 @@ from core.task_manager import run_tasks_in_parallel
 from modules.subdomain_enum import run_subfinder, run_assetfinder, run_findomain
 from modules.host_discovery import run_httpx
 from modules.crawling import run_katana, run_gau
+from modules.vuln_scanning import run_nuclei
 
 console = Console()
 
@@ -96,3 +97,24 @@ def run_crawling_phase(domain, config):
     console.print("[bold blue]      PHASE 3: CRAWLING & URL GATHERING COMPLETE[/bold blue]")
     console.print("="*50 + "\n")
     return all_urls
+
+def run_vuln_scanning_phase(domain, config):
+    """Orchestrates the vulnerability scanning phase (Phase 4)."""
+    console.print("\n\n" + "="*50)
+    console.print("[bold blue]      STARTING PHASE 4: VULNERABILITY SCANNING[/bold blue]")
+    console.print("="*50 + "\n")
+
+    urls_file = "urls/all_urls.txt"
+    if not os.path.exists(urls_file) or os.path.getsize(urls_file) == 0:
+        console.print("[yellow][!] URL list not found. Running Phase 3 first...[/yellow]")
+        if not run_crawling_phase(domain, config):
+            console.print("[bold red][!] Phase 3 did not find any URLs. Aborting Phase 4.[/bold red]")
+            return
+
+    # Vulnerability scanning is not run in parallel by default as Nuclei handles its own concurrency.
+    run_nuclei(urls_file, config)
+
+    console.print("\n" + "="*50)
+    console.print("[bold blue]      PHASE 4: VULNERABILITY SCANNING COMPLETE[/bold blue]")
+    console.print("="*50 + "\n")
+
